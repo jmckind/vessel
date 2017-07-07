@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    role: admin
+    tier: frontend
+  name: captain
+spec:
+  ports:
+   - port: 80
+     targetPort: 80
+  selector:
+    app: captain
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    role: admin
+    tier: frontend
+  name: captain
+spec:
+  template:
+    metadata:
+      labels:
+        role: admin
+        tier: frontend
+    spec:
+      containers:
+      - image: quay.io/john_mckenzie/captain:v0.0.1
+        name: captain
+        env:
+        - name: DECK_HOST
+          value: deck
+        ports:
+        - containerPort: 80
+          name: http
